@@ -35,6 +35,22 @@
         height: 100%;
       }
 
+      /* 论文内容行容器：统一子元素顶端对齐 */
+      .paper-content {
+        display: flex;
+        flex-direction: column;
+      }
+      
+      /* 媒体容器外层：取消默认padding，与标题顶端对齐 */
+      .media-wrapper {
+        padding: 10px !important; /* 清除默认垂直padding，避免顶部偏移 */
+      }
+      
+      /* 论文标题外层：取消默认padding，与媒体容器顶端对齐 */
+      .title-wrapper {
+        padding: 10px 15px !important; /* 仅保留水平padding，清除垂直padding */
+      }
+
       /* 移动端响应式样式 */
       @media (max-width: 768px) {
         /* 基础样式调整 */
@@ -74,12 +90,12 @@
           height: 200px !important;
         }
         
-        /* 研究论文区域 */
+        /* 研究论文区域：确保媒体容器与标题顶端对齐 */
         .one {
           width: 100% !important;
           height: auto !important;
-          margin: 0 auto 0;
-          padding: 10px 0;
+          margin: 0 auto !important; /* 清除顶部margin，避免偏移 */
+          padding: 0 !important; /* 清除内边距，与标题顶端对齐 */
         }
         
         /* 调整间距和字体 */
@@ -99,6 +115,7 @@
         
         .papertitle {
           font-size: 15px;
+          margin-top: 0 !important; /* 清除标题默认顶部margin */
         }
         
         /* 导航链接 */
@@ -113,11 +130,12 @@
           padding: 2.5% 0 !important;
         }
 
-        /* 论文行容器使用flex布局并逆序排列 */
+        /* 论文行容器：垂直排列且子元素顶端对齐 */
         .paper-row {
           display: flex;
           flex-direction: column-reverse;
           box-sizing: border-box;
+          margin-bottom: 20px; /* 论文间增加间距，避免重叠 */
         }
 
         /* 限制视频容器最大高度并自动调整宽度保持比例 */
@@ -132,10 +150,28 @@
         }
         
       }
-      /* 桌面端保持原有布局 */
+      /* 桌面端保持原有布局 + 顶端对齐 */
       @media (min-width: 769px) {
         .paper-row {
-          display: table-row; /* 恢复表格行显示 */
+          display: table-row;
+        }
+        
+        /* 桌面端：论文内容行横向排列，子元素顶端对齐 */
+        .paper-content {
+          display: table-row;
+        }
+        
+        .media-wrapper, .title-wrapper {
+          vertical-align: top !important; /* 强制子元素顶端对齐 */
+        }
+        
+        .one {
+          margin-top: 0 !important;
+          padding-top: 0 !important;
+        }
+        
+        .papertitle {
+          margin-top: 0 !important;
         }
       }
     </style>
@@ -220,7 +256,8 @@
             <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
               <!-- 论文1: OccluGaussian -->
               <tr onmouseout="ocllugs_stop()" onmouseover="ocllugs_start()" bgcolor="#ffffd0" class="paper-row">
-                <td style="padding:16px;width:20%;vertical-align:middle">
+                <!-- 媒体容器外层：添加.media-wrapper确保顶端对齐 -->
+                <td class="media-wrapper" style="width:20%;vertical-align:middle">
                   <div class="one">
                     <div class="media-container">
                       <div class="overlay-media" id='occlugaussian_video'>
@@ -245,8 +282,8 @@
                     ocllugs_stop()
                   </script>
                 </td>
-                
-                <td style="padding:8px;width:80%;vertical-align:middle">
+                <!-- 论文标题外层：添加.title-wrapper确保顶端对齐 -->
+                <td class="title-wrapper" style="width:80%;vertical-align:middle">
                   <a href="https://arxiv.org/abs/2503.16177">
                     <span class="papertitle">OccluGaussian: Occlusion-Aware Gaussian Splatting for Large Scene Reconstruction and Rendering</span>
                   </a>
@@ -275,7 +312,7 @@
 
               <!-- 论文2: Direction-Aware Hybrid Representation Learning -->
               <tr onmouseout="dahyf_stop()" onmouseover="dahyf_start()" bgcolor="#ffffd0" class="paper-row">
-                <td style="padding:16px;width:20%;vertical-align:middle">
+                <td class="media-wrapper" style="width:20%;vertical-align:middle">
                   <div class="one">
                     <div class="media-container">
                       <div class="overlay-media" id='dahyf_video'>
@@ -300,8 +337,7 @@
                     dahyf_stop()
                   </script>
                 </td>
-                
-                <td style="padding:8px;width:80%;vertical-align:middle">
+                <td class="title-wrapper" style="width:80%;vertical-align:middle">
                   <a href="https://arxiv.org/abs/2504.01298">
                     <span class="papertitle">Direction-Aware Hybrid Representation Learning for 3D Hand Pose and Shape Estimation</span>
                   </a>
@@ -328,7 +364,7 @@
 
               <!-- 论文3: SpecTRe -->
               <tr onmouseout="SpecTRe_stop()" onmouseover="SpecTRe_start()" bgcolor="#ffffd0" class="paper-row">
-                <td style="padding:16px;width:20%;vertical-align:middle">
+                <td class="media-wrapper" style="width:20%;vertical-align:middle">
                   <div class="one">
                     <div class="media-container">
                       <div class="overlay-media" id='SpecTRe_video'>
@@ -353,8 +389,7 @@
                     SpecTRe_stop()
                   </script>
                 </td>
-                
-                <td style="padding:8px;width:80%;vertical-align:middle">
+                <td class="title-wrapper" style="width:80%;vertical-align:middle">
                   <a href="">
                     <span class="papertitle">SpecTRe-GS: Modeling Highly Specular Surfaces with Reflected Nearby Objects by Tracing Rays in 3D Gaussian Splatting</span>
                   </a>
@@ -386,7 +421,7 @@
 
               <!-- 论文4: Hybrid -->
               <tr onmouseout="Hybrid_stop()" onmouseover="Hybrid_start()" bgcolor="#ffffd0" class="paper-row">
-                <td style="padding:16px;width:20%;vertical-align:middle">
+                <td class="media-wrapper" style="width:20%;vertical-align:middle">
                   <div class="one">
                     <div class="media-container">
                       <div class="overlay-media" id='Hybrid_video'>
@@ -412,7 +447,7 @@
                   </script>
                 </td>
                 
-                <td style="padding:8px;width:80%;vertical-align:middle">
+                <td class="title-wrapper" style="width:80%;vertical-align:middle">
                   <a href="">
                     <span class="papertitle">Hybrid Mesh-Gaussian Representation for Efficient Indoor Scene Reconstruction</span>
                   </a>
@@ -441,7 +476,7 @@
 
 
               <tr onmouseout="zeropto3_stop()" onmouseover="zeropto3_start()" bgcolor="#ffffd0" class="paper-row">
-                <td style="padding:16px;width:20%;vertical-align:middle">
+                <td class="media-wrapper" style="width:20%;vertical-align:middle">
                   <div class="one">
                     <div class="media-container">
                       <div class="overlay-media" id='zeropto3_video'>
@@ -467,7 +502,7 @@
                   </script>
                 </td>
                 
-                <td style="padding:8px;width:80%;vertical-align:middle">
+                <td class="title-wrapper" style="width:80%;vertical-align:middle">
                   <a href="">
                     <span class="papertitle">Zero-P-to-3: Zero-Shot Partial-View Images to 3D Object</span>
                   </a>
@@ -500,7 +535,7 @@
 
               <!-- 论文6: davigs -->
               <tr onmouseout="davigs_stop()" onmouseover="davigs_start()" bgcolor="#ffffd0" class="paper-row">
-                <td style="padding:16px;width:20%;vertical-align:middle">
+                <td class="media-wrapper" style="width:20%;vertical-align:middle">
                   <div class="one">
                     <div class="media-container">
                       <div class="overlay-media" id='davigs_video'>
@@ -526,7 +561,7 @@
                   </script>
                 </td>
                 
-                <td style="padding:8px;width:80%;vertical-align:middle">
+                <td class="title-wrapper" style="width:80%;vertical-align:middle">
                   <a href="https://arxiv.org/pdf/2501.10788">
                     <span class="papertitle">Decoupling Appearance Variations with 3D Consistent Features in Gaussian Splatting</span>
                   </a>
@@ -554,7 +589,7 @@
               </tr>
 
               <tr onmouseout="vase_stop()" onmouseover="vase_start()" bgcolor="#ffffd0" class="paper-row">
-                <td style="padding:16px;width:20%;vertical-align:middle">
+                <td class="media-wrapper" style="width:20%;vertical-align:middle">
                   <div class="one">
                     <div class="media-container">
                       <div class="overlay-media" id='vastgaussian_video'>
@@ -580,7 +615,7 @@
                   </script>
                 </td>
                 
-                <td style="padding:8px;width:80%;vertical-align:middle">
+                <td class="title-wrapper" style="width:80%;vertical-align:middle">
                   <a href="https://arxiv.org/abs/2402.17427">
                 <span class="papertitle">Vastgaussian: Vast 3d gaussians for large scene reconstruction</span>
                   </a>
@@ -608,7 +643,7 @@
               </tr>
 
               <tr onmouseout="ever_stop()" onmouseover="ever_start()" bgcolor="#ffffd0" class="paper-row">
-                <td style="padding:16px;width:20%;vertical-align:middle">
+                <td class="media-wrapper" style="width:20%;vertical-align:middle">
                   <div class="one">
                     <div class="media-container">
                       <div class="overlay-media" id='mirror_video'>
@@ -633,7 +668,7 @@
                     ever_stop()
                   </script>
                 </td>
-                <td style="padding:8px;width:80%;vertical-align:middle">
+                <td class="title-wrapper" style="width:80%;vertical-align:middle">
                   <a href="https://arxiv.org/abs/2405.11921">
                 <span class="papertitle">Mirrorgaussian: Reflecting 3d gaussians for reconstructing mirror reflections</span>
                   </a>
@@ -664,7 +699,7 @@
               </tr>
 
               <tr onmouseout="unorthogonalized_stop()" onmouseover="unorthogonalized_start()" bgcolor="#ffffd0" class="paper-row">
-                <td style="padding:16px;width:20%;vertical-align:middle">
+                <td class="media-wrapper" style="width:20%;vertical-align:middle">
                   <div class="one">
                     <div class="media-container">
                       <div class="overlay-media" id='unorthogonalized_video'>
@@ -689,7 +724,7 @@
                     unorthogonalized_stop()
                   </script>
                 </td>
-                <td style="padding:8px;width:80%;vertical-align:middle">
+                <td class="title-wrapper" style="width:80%;vertical-align:middle">
                   <a href="https://arxiv.org/pdf/2312.00462">
                 <span class="papertitle">LEARNING UNORTHOGONALIZED MATRICES FOR ROTATION ESTIMATION</span>
                   </a>
