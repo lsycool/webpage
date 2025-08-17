@@ -9,6 +9,32 @@
     <link rel="shortcut icon" href="images/favicon/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="stylesheet.css">
     <style>
+      /* 通用样式 */
+      .media-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+      }
+      
+      .media-container img,
+      .media-container video {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+      
+      .overlay-media {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+
       /* 移动端响应式样式 */
       @media (max-width: 768px) {
         /* 基础样式调整 */
@@ -52,15 +78,8 @@
         .one {
           width: 100% !important;
           height: auto !important;
-          margin: 0 auto 15px;
-        }
-        
-        .two, .one img, .one video {
-          width: 100% !important;
-          height: auto !important;
-          max-width: 300px;
-          margin: 0 auto;
-          display: block;
+          margin: 0 auto 0;
+          padding: 10px 0;
         }
         
         /* 调整间距和字体 */
@@ -92,6 +111,31 @@
         .personal-info {
           text-align: center;
           padding: 2.5% 0 !important;
+        }
+
+        /* 论文行容器使用flex布局并逆序排列 */
+        .paper-row {
+          display: flex;
+          flex-direction: column-reverse;
+          box-sizing: border-box;
+        }
+
+        /* 限制视频容器最大高度并自动调整宽度保持比例 */
+        .media-container {
+          max-height: 200px; /* 根据需要调整合适高度 */
+        }
+        
+        .media-container video,
+        .media-container img {
+          max-height: 100px;
+          object-fit: contain; /* 保持视频/图片比例，避免拉伸 */
+        }
+        
+      }
+      /* 桌面端保持原有布局 */
+      @media (min-width: 769px) {
+        .paper-row {
+          display: table-row; /* 恢复表格行显示 */
         }
       }
     </style>
@@ -125,10 +169,9 @@
                 
                 <!-- 头像区域 - 添加类名用于居中控制 -->
                 <td style="padding:2.5%;width:37%" class="avatar-container">
-                  <!-- <a href="images/liushiyong.jpg"><img style="width:100%;max-width:100%;object-fit: cover; border-radius: 50%;" alt="profile photo" src="images/liushiyong.jpg" class="hoverZoomLink"></a> -->
-                  <div id='avatar_lsy' style="display: flex; align-items: center; width: 251px; height: 251px; position: relative; cursor: pointer;" onmouseout="liushiyong_stop()" onmouseover="liushiyong_start()">
-                    <div id='liushiyong_video' style="width: 251px; height: 251px; position: absolute;" class="two">
-                      <video  id="digital_lsy" style="width:100%; height:100%; border-radius: 50%;" width=100% height=100% playsinline autoplay>
+                  <div id='avatar_lsy' style="display: flex; align-items: center; justify-content: center; width: 251px; height: 251px; position: relative; cursor: pointer;" onmouseout="liushiyong_stop()" onmouseover="liushiyong_start()">
+                    <div id='liushiyong_video' style="width: 251px; height: 251px; position: absolute;" class="overlay-media">
+                      <video  id="digital_lsy" style="border-radius: 50%;" width=100% height=100% playsinline autoplay>
                         <source src="images/liushiyong.mp4" type="video/mp4">
                           Your browser does not support the video tag.
                       </video>
@@ -167,7 +210,7 @@
                 <td style="padding:16px;width:100%;vertical-align:middle">
                   <h2>Research</h2>
                   <p>
-                    I'm interested in 3D computer vision, including camera pose estimation, motion capture and 3D reconstrucrion. Some papers are <span class="highlight">highlighted</span>.
+                    I'm interested in 3D computer vision, including camera pose estimation, motion capture and 3D reconstruction. Some papers are <span class="highlight">highlighted</span>.
                   </p>
                 </td>
               </tr>
@@ -175,15 +218,19 @@
             
             <!-- 论文列表（保持不变） -->
             <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
-              <!-- 论文内容保持不变 -->
-              <tr onmouseout="ocllugs_stop()" onmouseover="ocllugs_start()" bgcolor="#ffffd0">
+              <!-- 论文1: OccluGaussian -->
+              <tr onmouseout="ocllugs_stop()" onmouseover="ocllugs_start()" bgcolor="#ffffd0" class="paper-row">
                 <td style="padding:16px;width:20%;vertical-align:middle">
-                  <div class="one" style="display: flex; align-items: center;">
-                    <div class="two" id='occlugaussian_video'><video  width=100% height=100% muted autoplay loop>
-                    <source src="images/occlugaussian.mp4" type="video/mp4">
-                      Your browser does not support the video tag.
-                    </video></div>
-                    <img src='images/occlugaussian.jpg' id='occlugaussian_image' width=100%>
+                  <div class="one">
+                    <div class="media-container">
+                      <div class="overlay-media" id='occlugaussian_video'>
+                        <video muted autoplay loop>
+                          <source src="images/occlugaussian.mp4" type="video/mp4">
+                          Your browser does not support the video tag.
+                        </video>
+                      </div>
+                      <img src='images/occlugaussian.jpg' id='occlugaussian_image' width=100%>
+                    </div>
                   </div>
                   <script type="text/javascript">
                     function ocllugs_start() {
@@ -226,14 +273,19 @@
                 </td>
               </tr>
 
-              <tr onmouseout="dahyf_stop()" onmouseover="dahyf_start()" bgcolor="#ffffd0">
+              <!-- 论文2: Direction-Aware Hybrid Representation Learning -->
+              <tr onmouseout="dahyf_stop()" onmouseover="dahyf_start()" bgcolor="#ffffd0" class="paper-row">
                 <td style="padding:16px;width:20%;vertical-align:middle">
-                  <div class="one" style="display: flex; align-items: center;">
-                    <div class="two" id='dahyf_video'><video  width=100% height=100% muted autoplay loop>
-                    <source src="images/dahyf.mp4" type="video/mp4">
-                      Your browser does not support the video tag.
-                    </video></div>
-                    <img src='images/dahyf.png' id='dahyf_image' width=100%>
+                  <div class="one">
+                    <div class="media-container">
+                      <div class="overlay-media" id='dahyf_video'>
+                        <video muted autoplay loop>
+                          <source src="images/dahyf.mp4" type="video/mp4">
+                          Your browser does not support the video tag.
+                        </video>
+                      </div>
+                      <img src='images/dahyf.png' id='dahyf_image' width=100%>
+                    </div>
                   </div>
                   <script type="text/javascript">
                     function dahyf_start() {
@@ -274,16 +326,19 @@
                 </td>
               </tr>
 
-              <tr onmouseout="SpecTRe_stop()" onmouseover="SpecTRe_start()" bgcolor="#ffffd0">
+              <!-- 论文3: SpecTRe -->
+              <tr onmouseout="SpecTRe_stop()" onmouseover="SpecTRe_start()" bgcolor="#ffffd0" class="paper-row">
                 <td style="padding:16px;width:20%;vertical-align:middle">
-                  <div class="one" style="display: flex; align-items: center;">
-                    <div class="two" id='SpecTRe_video'>
-                      <video  width=100% height=100% muted autoplay loop>
-                        <source src="images/SpecTRe.mp4" type="video/mp4">
+                  <div class="one">
+                    <div class="media-container">
+                      <div class="overlay-media" id='SpecTRe_video'>
+                        <video muted autoplay loop>
+                          <source src="images/SpecTRe.mp4" type="video/mp4">
                           Your browser does not support the video tag.
                       </video>
                     </div>
                     <img src='images/SpecTRe.svg' id='SpecTRe_image' width=100%>
+					</div>
                   </div>
                   <script type="text/javascript">
                     function SpecTRe_start() {
@@ -329,16 +384,19 @@
                 </td>
               </tr>
 
-              <tr onmouseout="Hybrid_stop()" onmouseover="Hybrid_start()" bgcolor="#ffffd0">
+              <!-- 论文4: Hybrid -->
+              <tr onmouseout="Hybrid_stop()" onmouseover="Hybrid_start()" bgcolor="#ffffd0" class="paper-row">
                 <td style="padding:16px;width:20%;vertical-align:middle">
-                  <div class="one" style="display: flex; align-items: center;">
-                    <div class="two" id='Hybrid_video'>
-                      <video  width=100% height=100% muted autoplay loop>
-                        <source src="images/Hybrid.mp4" type="video/mp4">
+                  <div class="one">
+                    <div class="media-container">
+                      <div class="overlay-media" id='Hybrid_video'>
+                        <video muted autoplay loop>
+                          <source src="images/Hybrid.mp4" type="video/mp4">
                           Your browser does not support the video tag.
-                      </video>
-                    </div>
-                    <img src='images/Hybrid.png' id='Hybrid_image' width=100%>
+                      	</video>
+                      </div>
+                      <img src='images/Hybrid.png' id='Hybrid_image' width=100%>
+					</div>
                   </div>
                   <script type="text/javascript">
                     function Hybrid_start() {
@@ -382,16 +440,18 @@
               </tr>
 
 
-              <tr onmouseout="zeropto3_stop()" onmouseover="zeropto3_start()" bgcolor="#ffffd0">
+              <tr onmouseout="zeropto3_stop()" onmouseover="zeropto3_start()" bgcolor="#ffffd0" class="paper-row">
                 <td style="padding:16px;width:20%;vertical-align:middle">
-                  <div class="one" style="display: flex; align-items: center;">
-                    <div class="two" id='zeropto3_video'>
-                      <video  width=100% height=100% muted autoplay loop>
-                        <source src="images/zeropto3.mp4" type="video/mp4">
+                  <div class="one">
+                    <div class="media-container">
+                      <div class="overlay-media" id='zeropto3_video'>
+                        <video muted autoplay loop>
+                          <source src="images/zeropto3.mp4" type="video/mp4">
                           Your browser does not support the video tag.
-                      </video>
-                    </div>
-                    <img src='images/zeropto3.png' id='zeropto3_image' width=100%>
+                      	</video>
+                      </div>
+                      <img src='images/zeropto3.png' id='zeropto3_image' width=100%>
+					</div>
                   </div>
                   <script type="text/javascript">
                     function zeropto3_start() {
@@ -438,25 +498,29 @@
                   </td>
               </tr>
 
-
-              <tr onmouseout="davigs_stop()" onmouseover="davigs_start()" bgcolor="#ffffd0">
+              <!-- 论文6: davigs -->
+              <tr onmouseout="davigs_stop()" onmouseover="davigs_start()" bgcolor="#ffffd0" class="paper-row">
                 <td style="padding:16px;width:20%;vertical-align:middle">
-                  <div class="one" style="display: flex; align-items: center;">
-                    <div class="two" id='DAVIGS_video'><video  width=100% height=100% muted autoplay loop>
-                    <source src="images/DAVIGS.mp4" type="video/mp4">
-                      Your browser does not support the video tag.
-                    </video></div>
-                    <img src='images/DAVIGS.png' id='DAVIGS_image' width=100%>
+                  <div class="one">
+                    <div class="media-container">
+                      <div class="overlay-media" id='davigs_video'>
+                        <video muted autoplay loop>
+                          <source src="images/davigs.mp4" type="video/mp4">
+                          Your browser does not support the video tag.
+                        </video>
+                      </div>
+                      <img src='images/davigs.png' id='davigs_image' width=100%>
+                    </div>
                   </div>
                   <script type="text/javascript">
                     function davigs_start() {
-                      document.getElementById('DAVIGS_video').style.opacity = "1";
-                      document.getElementById('DAVIGS_image').style.opacity = "0";
+                      document.getElementById('davigs_video').style.opacity = "1";
+                      document.getElementById('davigs_image').style.opacity = "0";
                     }
 
                     function davigs_stop() {
-                      document.getElementById('DAVIGS_video').style.opacity = "0";
-                      document.getElementById('DAVIGS_image').style.opacity = "1";
+                      document.getElementById('davigs_video').style.opacity = "0";
+                      document.getElementById('davigs_image').style.opacity = "1";
                     }
                     davigs_stop()
                   </script>
@@ -489,14 +553,18 @@
                 </td>
               </tr>
 
-              <tr onmouseout="vase_stop()" onmouseover="vase_start()" bgcolor="#ffffd0">
+              <tr onmouseout="vase_stop()" onmouseover="vase_start()" bgcolor="#ffffd0" class="paper-row">
                 <td style="padding:16px;width:20%;vertical-align:middle">
-                  <div class="one" style="display: flex; align-items: center;">
-                    <div class="two" id='vastgaussian_video'><video  width=100% height=100% muted autoplay loop>
-                    <source src="images/vastgaussian.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                    </video></div>
-                    <img src='images/vastgaussian.png' id='vastgaussian_image' width="160">
+                  <div class="one">
+                    <div class="media-container">
+                      <div class="overlay-media" id='vastgaussian_video'>
+                        <video muted autoplay loop>
+                          <source src="images/vastgaussian.mp4" type="video/mp4">
+                          Your browser does not support the video tag.
+                        </video>
+                      </div>
+                      <img src='images/vastgaussian.png' id='vastgaussian_image' width=100%>
+                    </div>
                   </div>
                   <script type="text/javascript">
                     function vase_start() {
@@ -539,14 +607,18 @@
                 </td>
               </tr>
 
-              <tr onmouseout="ever_stop()" onmouseover="ever_start()" bgcolor="#ffffd0">
+              <tr onmouseout="ever_stop()" onmouseover="ever_start()" bgcolor="#ffffd0" class="paper-row">
                 <td style="padding:16px;width:20%;vertical-align:middle">
-                  <div class="one" style="display: flex; align-items: center;">
-                    <div class="two" id='mirror_video'><video  width=100% height=100% muted autoplay loop>
-                      <source src="images/mirrorgaussian.mp4" type="video/mp4">
-                      Your browser does not support the video tag.
-                      </video></div>
-                      <img src='images/mirrorgaussian.png' id='mirror_image' width="160">
+                  <div class="one">
+                    <div class="media-container">
+                      <div class="overlay-media" id='mirror_video'>
+                        <video muted autoplay loop>
+                          <source src="images/mirrorgaussian.mp4" type="video/mp4">
+                          Your browser does not support the video tag.
+                        </video>
+                      </div>
+                      <img src='images/mirrorgaussian.png' id='mirror_image' width=100%>
+                    </div>
                   </div>
                   <script type="text/javascript">
                     function ever_start() {
@@ -591,14 +663,18 @@
                 </td>
               </tr>
 
-              <tr onmouseout="unorthogonalized_stop()" onmouseover="unorthogonalized_start()" bgcolor="#ffffd0">
+              <tr onmouseout="unorthogonalized_stop()" onmouseover="unorthogonalized_start()" bgcolor="#ffffd0" class="paper-row">
                 <td style="padding:16px;width:20%;vertical-align:middle">
-                  <div class="one" style="display: flex; align-items: center;">
-                    <div class="two" id='unorthogonalized_video'><video  width=100% height=100% muted autoplay loop>
-                      <source src="" type="video/mp4">
-                      Your browser does not support the video tag.
-                      </video></div>
-                      <img src='images/unorthogonalized.png' id='unorthogonalized_image' width="160">
+                  <div class="one">
+                    <div class="media-container">
+                      <div class="overlay-media" id='unorthogonalized_video'>
+                        <video muted autoplay loop>
+                          <source src="images/unorthogonalized.mp4" type="video/mp4">
+                          Your browser does not support the video tag.
+                        </video>
+                      </div>
+                      <img src='images/unorthogonalized.png' id='unorthogonalized_image' width=100%>
+                    </div>
                   </div>
                   <script type="text/javascript">
                     function unorthogonalized_start() {
@@ -610,7 +686,7 @@
                       document.getElementById('unorthogonalized_video').style.opacity = "0";
                       document.getElementById('unorthogonalized_image').style.opacity = "1";
                     }
-                    ever_stop()
+                    unorthogonalized_stop()
                   </script>
                 </td>
                 <td style="padding:8px;width:80%;vertical-align:middle">
@@ -652,62 +728,6 @@
             
             <!-- 行业项目区域 -->
             <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>  
-              <!-- <tr>
-                <td align="center" style="padding:16px;width:20%;vertical-align:middle">
-                    <div class="colored-box" style="background-color: #fcb97d;">
-                    <h2>Micropapers</h2>
-                    </div>
-                </td> -->
-                <!-- <td style="padding:8px;width:80%;vertical-align:middle">
-                  <a href="https://arxiv.org/abs/2112.11687">Squareplus: A Softplus-Like Algebraic Rectifier</a>
-                  <br>
-                  <a href="https://arxiv.org/abs/2010.09714">A Convenient Generalization of Schlick's Bias and Gain Functions</a>
-                  <br>
-                  <a href="https://arxiv.org/abs/1704.07483">Continuously Differentiable Exponential Linear Units</a>
-                  <br>
-                  <a href="https://jonbarron.info/data/cvpr2023_llm_workshop_annotated.pdf">Scholars & Big Models: How Can Academics Adapt?</a>
-                </td> -->
-              <!-- </tr>
-              <tr>
-                <td align="center" style="padding:16px;width:20%;vertical-align:middle">
-                    <div class="colored-box" style="background-color: #aaba9e;">
-                    <h2>Recorded Talks</h2>
-                    </div>
-                </td> -->
-                <!-- <td style="padding:8px;width:80%;vertical-align:center">
-                  <a href="https://www.youtube.com/watch?v=h9vq_65eDas">View Dependent Podcast, 2024</a>
-                  <br>
-                  <a href="https://www.youtube.com/watch?v=4tDhYsFuEqo">Bay Area Robotics Symposium, 2023</a>
-                  <br>
-                  <a href="https://youtu.be/TvWkwDYtBP4?t=7604">EGSR Keynote, 2021</a>
-                  <br>
-                  <a href="https://www.youtube.com/watch?v=nRyOzHpcr4Q">TUM AI Lecture Series, 2020</a>
-                  <br>
-                  <a href="https://www.youtube.com/watch?v=HfJpQCBTqZs">Vision & Graphics Seminar at MIT, 2020</a>
-                </td> -->
-              <!-- </tr>
-              <tr>
-                <td align="center" style="padding:16px;width:20%;vertical-align:middle">
-                    <div class="colored-box" style="background-color: #c6b89e;">
-                    <h2>Academic Service</h2>
-                    </div>
-                </td> -->
-                <!-- <td style="padding:8px;width:80%;vertical-align:center">
-                  <a href="https://cvpr.thecvf.com/Conferences/2025/Organizers">Area Chair, CVPR 2025</a>
-                  <br>
-                  <a href="https://cvpr.thecvf.com/Conferences/2024/Organizers">Area Chair, CVPR 2024</a>
-                  <br>
-                  <a href="https://cvpr2023.thecvf.com/Conferences/2023/Organizers">Demo Chair, CVPR 2023</a>
-                  <br>
-                  <a href="https://cvpr2022.thecvf.com/area-chairs">Area Chair, CVPR 2022</a>
-                  <br>
-                  <a href="http://cvpr2021.thecvf.com/area-chairs">Area Chair & Award Committee Member, CVPR 2021</a>
-                  <br>
-                  <a href="http://cvpr2019.thecvf.com/area_chairs">Area Chair, CVPR 2019</a>
-                  <br>
-                  <a href="http://cvpr2018.thecvf.com/organizers/area_chairs">Area Chair, CVPR 2018</a>
-                </td> -->
-              </tr>
               <tr>
                 <td align="center" style="padding:16px;width:20%;vertical-align:middle">
                     <div class="colored-box" style="background-color: #edd892;">
